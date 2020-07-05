@@ -1,39 +1,39 @@
 # Mythic Notifications
-A simple notification system inspired by NoPixel's
+Basit bir bildirim sistemi.
 
-![Image of Notification](https://i.imgur.com/shT1XWc.png)
+![Örnek Resim](https://i.imgur.com/shT1XWc.png)
 
-## Use
-To display a notification simply make a call like below (Client-Side) :
+## Kullanımı
+Client-Side için en basitinden Alert triggerlama
 
 ```lua
 exports['mythic_notify']:SendAlert('type', 'message')
 ```
 
-### Notification Styles
-* Inform - 'inform'
-* Error - 'error'
-* Success - 'success'
+### Bildirim Stilleri
+* Bilgilendirme - 'inform'
+* Hata - 'error'
+* Başarılı - 'success'
 
-### Client-Side Functions (All Exported)
-* SendAlert ( type, text, length, style ) | Displays Standard Alert For Provided Time. Length & Style are both optional, if no length is passed it defaults to 2500ms or 2.5s. If no style is passed it will use the style of the passed alert type
-* SendUniqueAlert ( id, type, text, length, style ) | Displays Standard Alert For Provided Time. Requires a unique ID to be passed, if an alert already exists with that ID it will simply update the existing alert and refresh the timer for the passed time. Allows you to prevent a massive amount of alerts being spammed.
-* PersistentAlert ( action, id, type, text, style ) | Displays an alert that will persist on the screen until function is called again with end action.
+### Client-Side Fonksiyonları
+* SendAlert ( type, text, length, style ) | Ekranda basit bir alert gösterir, süresi ayarlanmazsa varsayılan olarak 2500 milisaniye kalır. Style ise opsiyoneldir ve isterseniz değiştirebilirsiniz.
+* SendUniqueAlert ( id, type, text, length, style ) | Ekranda birdan fazla alert göstermek yerine süresini sıfırlar. Ekranda ki bildirim spamına engel olabilirsiniz.
+* PersistentAlert ( action, id, type, text, style ) | End action ile tekrar triggerlanana kadar ekranda kalır. Süresi yoktur ve sonsuzdur.
 
-### Client Events (Trigger Notification From Server)
-* mythic_notify:client:SendAlert OBJECT { type, text, duration } - If no duration is given, will default to 2500ms
-* mythic_notify:client:PersistentAlert OBJECT { action, id, type, text } - Note: If using end action, type & text can be excluded)
+### Client Events (Bildirimi Server Side üzerinden Triggerlama)
+* mythic_notify:client:SendAlert OBJECT { type, text, duration } - Duration verilmez ise varsayılan olarak 2500 milisaniye ekranda kalır.
+* mythic_notify:client:PersistentAlert OBJECT { action, id, type, text } - Note: End actionını kullanacaksanız Type ve Text kısımlarını boş bırakmalısınız.
 
-### Persistent Notifications Actions -
-* start - ( id, type, text, style ) - Additionally, you can call PersistentAlert with the start action and pass an already existing ID to update the notification on the screen.
-* end - ( id )
+### Persistent Bildirim aksiyonları -
+* start - ( id, type, text, style ) - Yeni bir bildirim oluşturur veya aynı IDye sahip bir bildirim varsa süresini sıfırlar.
+* end - ( id ) - Persistent bildirimini bitirir.
 
-> Note About ID: This is expected to be an entirely unique value that your resource is responsible for tracking. I’d suggest using something related to your resource name so there’s no chance of interferring with any other persistent notifications that may exist.
+> ID hakkında küçük bir not: Birdan fazla scirpt aynı IDyi kullanabilir, bunun önüne geçmek için scriptlerinize daha önce verilmemiş IDler verin.
 
-### Custom Style Format -
-The custom style is a simple array in key, value format where the key is the CSS style attribute and the value is whatever you want to set that CSS attribute to.
+### Özelleştirilmiş Stilli Bildirimler -
+Bildirimlerinizi özelleştirme imkanınıza sahipsiniz, 
 
-#### Examples -
+#### Örnekler -
 ##### Client:
 ```LUA
 exports['mythic_notify']:SendAlert('inform', 'Hype! Custom Styling!', 2500, { ['background-color'] = '#ffffff', ['color'] = '#000000' })
@@ -44,7 +44,7 @@ exports['mythic_notify']:SendAlert('inform', 'Hype! Custom Styling!', 2500, { ['
 TriggerClientEvent('mythic_notify:client:SendAlert', source, { type = 'inform', text = 'Hype! Custom Styling!', length = 2500, style = { ['background-color'] = '#ffffff', ['color'] = '#000000' } })
 ```
 
-> Note: When calling through the event, you can omit the length parameter and the alert will default to 2500 ms or ~2.5 seconds
+> Not: Eğer length parametresini girmezseniz varsayılan olarak ekranda 2500 milsaniye durur.
 
-##### Result:
+##### Sonuç:
 ![Custom Styling](https://i.imgur.com/FClWCqm.png)
